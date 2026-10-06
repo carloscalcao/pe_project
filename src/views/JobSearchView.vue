@@ -89,7 +89,7 @@
 				<span class="span-little" style="color:var(--p-yellow-600) ;"><Lock/> {Nº} Ofertas bloqueadas</span>
 			</Panel>
 		</div>
-		<JobPreview/>
+		<JobPreview v-for="job in listJobs" key="job.id" :jobId="job.id" :jobTitle="job.title"/>
 	</div>
 </template>
 
@@ -130,11 +130,15 @@ const listJobSkillHave =ref([
 	{id:2,text:'gestão de stock',perc:80},
 	{id:3,text:'acondicionar mercadorias',perc:67},
 ])
+
 const listJobSkillToDo =ref([
 	{id:1,text:'gerir inventário do armazém',perc:87},
 	{id:2,text:'receção de mercadoria',perc:73},
+])
 
-
+const listJobs =ref([
+	{id:81,title:'Job 1'},
+	{id:92,title:'Job 2'},
 ])
 const searchJob = () =>{
 	searchLoading.value = true;

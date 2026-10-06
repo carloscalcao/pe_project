@@ -2,7 +2,7 @@
 	<Panel class="job-preview">
 		<div class="job-preview-header">
 			<div>
-				Titulo
+				{{ jobInfo.jobTitle }}
 			</div>
 			<div>
 				nota
@@ -31,10 +31,12 @@
 import { Panel } from 'primevue';
 import {defineProps} from 'vue';
 
-const jobInfo = defineProps(['jobId']);
+const jobInfo = defineProps(['jobId','jobTitle']);
 
 </script>
 
 <style scoped>
-
+	.p-panel{
+		margin-top: 10px;
+	}
 </style>
