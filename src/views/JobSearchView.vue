@@ -67,20 +67,20 @@
 				<div class="colls">
 					<div class="col">
 						<span class="span_bold">O QUE JÁ TEM E É MAIS PEDIDO</span>
-						<div class="span_little">
+						<div v-for="item in listJobSkillHave" key="item.id" class="span_little">
 							<div class="space_between_content">
-								<span class="span_highlight">{TEXTO}</span>
-								<span>{%} das ofertas</span>
+								<span class="span_highlight">{{item.text}}</span>
+								<span>{{ item.perc }}% das ofertas</span>
 							</div>
 							<Divider/>
 						</div>
 					</div>
 					<div class="col">
 						<span class="span_bold">O QUE PODE DESENVOLVER</span>
-						<div>
+						<div v-for="item in listJobSkillToDo" key="item.id" class="span_little">
 							<div class="space_between_content">
-								<span class="span_normal">{TEXTO}</span>
-								<span>{%} das ofertas</span>
+								<span class="span_normal">{{item.text}}</span>
+								<span>{{ item.perc }}% das ofertas</span>
 							</div>
 							<Divider/>
 						</div>
@@ -125,6 +125,17 @@ const zoneList = ref([
 	{ value: 'Região Autónoma da Madeira' }
 ])
 
+const listJobSkillHave =ref([
+	{id:1,text:'controlar o nível de existências',perc:87},
+	{id:2,text:'gestão de stock',perc:80},
+	{id:3,text:'acondicionar mercadorias',perc:67},
+])
+const listJobSkillToDo =ref([
+	{id:1,text:'gerir inventário do armazém',perc:87},
+	{id:2,text:'receção de mercadoria',perc:73},
+
+
+])
 const searchJob = () =>{
 	searchLoading.value = true;
 	setTimeout(()=>{
@@ -209,5 +220,7 @@ const searchJob = () =>{
 	.col{
 		width: 48%;
 	}
-
+	.p-divider-horizontal{
+		margin: 5px;
+	}
 </style>
