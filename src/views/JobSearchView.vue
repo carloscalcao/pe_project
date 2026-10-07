@@ -1,12 +1,13 @@
 <template>
-	<div class="page_content">
+	<LoadingPage v-if="fieldsLoading"/>
+	<div v-else class="page_content">
 		<div class="user-info">
 			<label>{USER NAME}</label>
 		</div>
 
 		<h1>Ofertas de Emprego para si</h1>
 		<h4>As ofertas que encaixam no seu perfil, por ordem, e porquê.Pode afinar com filtros ou dizer por palavras suas o que procura.</h4>
-
+		
 		<Panel class="job-panel-insert">
 
 			<Label for="jobDescription">O que procura (opcional)</Label>
@@ -15,7 +16,7 @@
 			<div class="job-panel-filters-area">
 				<div class="job-panel-div-input">
 					<Label  for="jobZone">Zona</Label>
-					<Select id="jobZone" :options="zoneList" optionLabel="value" optionValue="value"/>
+					<Select id="jobZone" :options="zoneList" optionLabel="name" optionValue="name"/>
 				</div>
 				<div class="job-panel-div-input">
 					<Label for="jobContract">Contrato</Label>
@@ -95,57 +96,45 @@
 
 <script setup lang="ts">
 import JobPreview from '@/components/JobPreview.vue';
-import {ref} from 'vue';
+import LoadingPage from '@/components/LoadingPage.vue';
+import {ref,onMounted} from 'vue';
 import {Search, Spinner, Lock} from '@primeicons/vue';
-import { Button,Panel,Textarea,Label,Select,Checkbox,Divider } from 'primevue';
+import { Button,Panel,Textarea,Label,Select,Checkbox,Divider,Skeleton } from 'primevue';
 
 const searchLoading = ref(false);
+const fieldsLoading = ref(true);
 
-const zoneList = ref([
-	{ value: 'Todas' },
-	{ value: 'Aveiro' },
-	{ value: 'Beja' },
-	{ value: 'Braga' },
-	{ value: 'Bragança' },
-	{ value: 'Castelo Branco' },
-	{ value: 'Coimbra' },
-	{ value: 'Évora' },
-	{ value: 'Faro' },
-	{ value: 'Guarda' },
-	{ value: 'Leiria' },
-	{ value: 'Lisboa' },
-	{ value: 'Portalegre' },
-	{ value: 'Porto' },
-	{ value: 'Santarém' },
-	{ value: 'Setúbal' },
-	{ value: 'Viana do Castelo' },
-	{ value: 'Vila Real' },
-	{ value: 'Viseu' },
-	{ value: 'Região Autónoma dos Açores' },
-	{ value: 'Região Autónoma da Madeira' }
-])
+const zoneList = ref([]);
+
+const loadZoneList = async () => {
+	const res = await fetch('http://localhost:8080/api/ZonesList');
+  	zoneList.value = await res.json();
+	fieldsLoading.value=false;
+};
 
 const listJobSkillHave =ref([
 	{id:1,text:'controlar o nível de existências',perc:87},
 	{id:2,text:'gestão de stock',perc:80},
 	{id:3,text:'acondicionar mercadorias',perc:67},
-])
+]);
 
 const listJobSkillToDo =ref([
 	{id:1,text:'gerir inventário do armazém',perc:87},
 	{id:2,text:'receção de mercadoria',perc:73},
-])
+]);
 
 const listJobs =ref([
 	{id:81,title:'Job 1'},
 	{id:92,title:'Job 2'},
-])
+]);
 const searchJob = () =>{
 	searchLoading.value = true;
 	setTimeout(()=>{
 		searchLoading.value = false;
 	},5000)
 };
+
+onMounted(loadZoneList)
 </script>
 
 <style scoped>
